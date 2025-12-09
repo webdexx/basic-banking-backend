@@ -1,26 +1,13 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
+const userDetailsSchema = new mongoose.Schema(
   {
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
-    isFilled: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", unique: true },
+    isFilled: { type: Boolean, required: true, default: false },
     personalInfo: {
-      gender: {
-        type: String,
-        enum: ["MALE", "FEMALE", "OTHER"],
-      },
-      dateOfBirth: Date,
-      nationality: {
-        type: String,
-        default: "INDIAN",
-      },
+      gender: { type: String, enum: ["MALE", "FEMALE", "OTHER"] },
+      dateOfBirth: String,
+      nationality: { type: String, default: "INDIAN" },
       permanentAddress: {
         street: String,
         city: String,
@@ -36,13 +23,18 @@ const userSchema = new mongoose.Schema(
         pincode: String,
         country: String,
       },
+    },
+    documents: {
       panNumber: {
         type: String,
         uppercase: true,
+        match: [/^[A-Z]{5}[0-9]{4}[A-Z]$/, "PAN format is invalid"],
       },
-      aadhaarNumber: String,
+      aadhaarNumber: {
+        type: String,
+        match: [/^\d{12}$/, "Aadhaar must be a 12-digit number"],
+      },
 
-      // Occupation Details
       occupation: {
         type: String,
         enum: [
@@ -65,8 +57,6 @@ const userSchema = new mongoose.Schema(
           "ABOVE_200000",
         ],
       },
-      employerName: String,
-      designation: String,
     },
     kycStatus: {
       personalInfo: {
@@ -79,23 +69,17 @@ const userSchema = new mongoose.Schema(
         default: "DUE",
         enum: ["ACTIVE", "DUE", "COMPLETE"],
       },
-      isApproved: {
-        type: Boolean,
-        default: false,
+      overallStatus: {
+        type: String,
+        default: "PENDING",
+        enum: ["PENDING", "PENDING_REVIEW", "REJECTED", "ON_HOLD", "APPROVED"], // if you added APPROVED
       },
-      reviewedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Admin",
-      },
+      reviewedBy: { type: mongoose.Schema.Types.ObjectId, ref: "Admin" },
       reviewedAt: Date,
       rejectionReason: String,
-    }
+    },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
-
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+const UserDetails = mongoose.model("UserDetails", userDetailsSchema);
+module.exports = UserDetails;

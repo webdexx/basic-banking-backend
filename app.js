@@ -10,6 +10,7 @@ const Account = require("./models/Account");
 const Transaction = require("./models/Transaction");
 
 const auth = require("./middleware/auth");
+const requireKYC = require("./middleware/requireKYC");
 
 const app = express();
 
@@ -23,8 +24,9 @@ app.use(cors({
 connectDB();
 
 app.use("/register", require("./routes/userRoute"));
+app.use("/kyc", auth, require("./routes/kycRoute"));
 app.use("/auth", require("./routes/authRoutes"));
-app.use("/account", auth, require("./routes/accountRoute"));
+app.use("/account", auth, requireKYC, require("./routes/accountRoute"));
 app.use("/transactions", auth, require("./routes/transactionRoute"));
 app.use("/cards", auth, require("./routes/cardRoute"));
 

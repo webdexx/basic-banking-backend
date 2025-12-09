@@ -7,7 +7,7 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).populate("flag");
 
         if(!user) {
             return res.status(400).json({
@@ -32,6 +32,7 @@ const login = async (req, res) => {
         res.status(200).json({
             message: "Login Successful",
             token,
+            flag: user.flag
        });
     } catch(error) {
         res.status(500).json({

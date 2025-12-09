@@ -1,11 +1,11 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/User");
+const User = require("../models/Admin");
 
-const registerUser = async (req, res) => {
+const registerAdminUser = async (req, res) => {
     try {
-      const { firstName, lastName, email, password, isActive, flag, mobileNo } = req.body;
+      const { fullName, email, mobileNo, password, pin, role, isActive } = req.body;
 
       const existingUser = await User.findOne({ email });
 

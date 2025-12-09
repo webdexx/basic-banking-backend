@@ -2,37 +2,36 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
+    fullName: {
       type: String,
-      require: true
-    },
-    lastName: {
-      type: String,
-      required: true
+      require: true,
     },
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     mobileNo: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
       required: true,
     },
+    pin: {
+      type: String,
+      required: true,
+    },
+    role: {
+        type: String,
+        required: true,
+        enum: ["ADMIN", "ACCOUNTANT", "CASHIER", "MANAGER", "BACKOFFICE", "SALES", "OTHER"]
+    },
     isActive: {
       type: Boolean,
       default: true,
-    },
-    flag: {
-      type: String,
-      required: true,
-      default: "PENDING",
-      enum: ["PENDING", "APPROVED", "REJECTED", "SUSPENDED", "IN_REVIEW"],
     }
   },
   {

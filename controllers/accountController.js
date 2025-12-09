@@ -15,7 +15,7 @@ const createAccount = async (req, res) => {
         message: "User Already has an account",
         account: {
           accountNumber: existingAccount.accountNumber,
-          name: fullName,
+          name: fullName || "",
           branch: existingAccount.branch,
           status: existingAccount.status,
         },
@@ -44,7 +44,7 @@ const createAccount = async (req, res) => {
       message: "Account Created Successfully",
       account: {
         accountNumber: createNewAccount.accountNumber,
-        name: fullName,
+        name: fullName || "",
         ifsc: createNewAccount.ifsc,
         branch: createNewAccount.branch,
         balance: createNewAccount.balance,
