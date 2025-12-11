@@ -10,13 +10,12 @@ const createCard = async (req, res) => {
     const range = 10000;
     const uniqueCard = `4876778005155${Math.floor(Math.random() * range)}`;
     const cvv = Math.floor(Math.random() * 1000);
-    const existingCard = await Card.findOne({ user: userId });
 
-    // if (existingCard.cardType === "Prepaid") {
-    //     limit = 0;
-    // } else {
-    //     limit = ;
-    // }
+    if(cardType === "Prepaid") {
+      limit = 0;
+    } 
+
+    const existingCard = await Card.findOne({ user: userId });
 
     const createNewCard = await Card.create({
       cardNumber: `${uniqueCard}`,

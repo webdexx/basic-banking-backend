@@ -6,7 +6,6 @@ const cardSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true,
     },
     account: {
       type: mongoose.Schema.Types.ObjectId,

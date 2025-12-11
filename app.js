@@ -2,6 +2,10 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimiter = require("./middleware/rateLimiter");
+const compression = require("compression");
+
 const mongoose = require("mongoose");
 const connectDB = require("./config/db");
 
@@ -15,6 +19,8 @@ const requireKYC = require("./middleware/requireKYC");
 const app = express();
 
 app.use(express.json());
+app.use(helmet());
+app.use(compression());
 
 app.use(cors({
   origin: ["http://localhost:5173", "https://localhost:5500", "http://127.0.0.1:5500"],
@@ -23,12 +29,12 @@ app.use(cors({
 
 connectDB();
 
-app.use("/register", require("./routes/userRoute"));
-app.use("/kyc", auth, require("./routes/kycRoute"));
-app.use("/auth", require("./routes/authRoutes"));
-app.use("/account", auth, requireKYC, require("./routes/accountRoute"));
-app.use("/transactions", auth, require("./routes/transactionRoute"));
-app.use("/cards", auth, require("./routes/cardRoute"));
+app.use("/register", rateLimiter, require("./routes/userRoute"));
+app.use("/kyc", auth, rateLimiter, require("./routes/kycRoute"));
+app.use("/auth", rateLimiter, require("./routes/authRoutes"));
+app.use("/account", auth, requireKYC, rateLimiter, require("./routes/accountRoute"));
+app.use("/transactions", auth, rateLimiter, require("./routes/transactionRoute"));
+app.use("/cards", auth, rateLimiter, require("./routes/cardRoute"));
 
 app.get("/", auth, (async (req, res) => {
     
