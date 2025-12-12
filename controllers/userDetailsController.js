@@ -1,4 +1,5 @@
 const UserDetails = require("../models/UserDetails");
+const User = require("../models/User");
 
 const personalDetailsKYC = async (req, res) => {
   try {
@@ -176,10 +177,29 @@ const getUserKyc = async (req, res) => {
     const userId = req.user.id;
 
     const kycData = await UserDetails.find({ user: userId });
+    const personalData = await User.findById(userId);
+
+    const userPersonalInfo = kycData[0].personalInfo;
+    const userProfessionalInfo = kycData[0].documents;
+
+    const userData = {
+      userFullname: `${personalData.firstName} ${personalData.lastName}`,
+      userEmail: personalData.email,
+      userMobile: personalData.mobileNo,
+      userStatus: personalData.isActive,
+      userPermanentAddress: `${userPersonalInfo.permanentAddress.street}, ${userPersonalInfo.permanentAddress.city}, ${userPersonalInfo.permanentAddress.state} - ${userPersonalInfo.permanentAddress.pincode}, ${userPersonalInfo.permanentAddress.country}`,
+      userCorrespondenceAddress: `${userPersonalInfo.correspondenceAddress.street}, ${userPersonalInfo.correspondenceAddress.city}, ${userPersonalInfo.correspondenceAddress.state} - ${userPersonalInfo.correspondenceAddress.pincode}, ${userPersonalInfo.correspondenceAddress.country}`,
+      userGender: userPersonalInfo.gender,
+      userDOB: userPersonalInfo.dateOfBirth,
+      userPAN: userProfessionalInfo.panNumber,
+      userAadhar: userProfessionalInfo.aadhaarNumber,
+      userOccupation: userProfessionalInfo.occupation,
+      userMonthlyIncome: userProfessionalInfo.monthlyIncome
+    }
 
     return res.status(200).json({
       message: "Data Fetched Successfully",
-      kycData
+      userData
     });
   } catch (error) {
     return res.status(500).json({
