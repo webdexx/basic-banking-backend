@@ -1,5 +1,5 @@
-const UserDetails = require("../models/UserDetails");
-const User = require("../models/User");
+const UserDetails = require("./userDetails.model");
+const User = require("./user.model");
 
 const personalDetailsKYC = async (req, res) => {
   try {

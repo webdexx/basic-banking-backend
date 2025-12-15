@@ -5,7 +5,7 @@ const {
   documentsKYC,
   getUserKyc,
   getKycStatus,
-} = require("../controllers/userDetailsController");
+} = require("./userDetails.controller");
 router.post("/personal-details", personalDetailsKYC);
 router.post("/professional-details", documentsKYC);
 

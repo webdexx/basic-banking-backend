@@ -1,5 +1,5 @@
-const Card = require("../models/Card");
-const Account = require("../models/Account");
+const Card = require("./card.model");
+const Account = require("../account/account.model");
 
 const createCard = async (req, res) => {
   try {

@@ -9,11 +9,11 @@ const compression = require("compression");
 const mongoose = require("mongoose");
 const connectDB = require("./config/db");
 
-const User = require("./models/User");
-const Account = require("./models/Account");
-const Transaction = require("./models/Transaction");
+const User = require("./modules/users/user.model");
+const Account = require("./modules/account/account.model");
+const Transaction = require("./modules/transactions/transaction.model");
 
-const auth = require("./middleware/auth");
+const auth = require("./modules/users/auth.middleware");
 const requireKYC = require("./middleware/requireKYC");
 
 const app = express();
@@ -29,12 +29,12 @@ app.use(cors({
 
 connectDB();
 
-app.use("/register", rateLimiter, require("./routes/userRoute"));
-app.use("/kyc", auth, rateLimiter, require("./routes/kycRoute"));
-app.use("/auth", rateLimiter, require("./routes/authRoutes"));
-app.use("/account", auth, requireKYC, rateLimiter, require("./routes/accountRoute"));
-app.use("/transactions", auth, rateLimiter, require("./routes/transactionRoute"));
-app.use("/cards", auth, rateLimiter, require("./routes/cardRoute"));
+app.use("/register", rateLimiter, require("./modules/users/user.route"));
+app.use("/kyc", auth, rateLimiter, require("./modules/users/kyc.route"));
+app.use("/auth", rateLimiter, require("./modules/users/auth.route"));
+app.use("/account", auth, requireKYC, rateLimiter, require("./modules/account/account.route"));
+app.use("/transactions", auth, rateLimiter, require("./modules/transactions/transaction.route"));
+app.use("/cards", auth, rateLimiter, require("./modules/cards/card.route"));
 
 app.get("/", auth, (async (req, res) => {
     

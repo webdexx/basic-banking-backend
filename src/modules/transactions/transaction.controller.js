@@ -1,6 +1,6 @@
-const Account = require("../models/Account");
-const Transaction = require("../models/Transaction");
-const User = require("../models/User");
+const Account = require("../account/account.model");
+const Transaction = require("../transactions/transaction.model");
+const User = require("../users/user.model");
 
 function buildName(user) {
   if (!user) return null;
