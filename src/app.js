@@ -23,7 +23,7 @@ app.use(helmet());
 app.use(compression());
 
 app.use(cors({
-  origin: ["http://localhost:5173", "https://localhost:5500", "http://127.0.0.1:5500"],
+  origin: ["http://localhost:5173"],
   credentials: true
 }));
 
@@ -37,12 +37,12 @@ app.use("/transactions", auth, rateLimiter, require("./modules/transactions/tran
 app.use("/cards", auth, rateLimiter, require("./modules/cards/card.route"));
 
 app.get("/", auth, (async (req, res) => {
-    
-    const userDetails = req.user;
-    res.json({ 
-        message: "Hello From Home",
-        userDetails
-        });
+
+  const userDetails = req.user;
+  res.json({
+    message: "Hello From Home",
+    userDetails
+  });
 }));
 
 app.listen(3000, () => console.log(`Server is up and running on 3000`));
