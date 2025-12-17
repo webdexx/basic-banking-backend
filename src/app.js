@@ -13,6 +13,7 @@ const connectDB = require("./config/db");
 const User = require("./modules/users/user.model");
 const Account = require("./modules/account/account.model");
 const Transaction = require("./modules/transactions/transaction.model");
+const Beneficiary = require("./modules/beneficiary/beneficiary.model");
 
 const auth = require("./modules/users/auth.middleware");
 
@@ -34,6 +35,7 @@ app.use("/register", rateLimiter, require("./modules/users/user.route"));
 app.use("/kyc", auth, rateLimiter, require("./modules/users/kyc.route"));
 app.use("/auth", rateLimiter, require("./modules/users/auth.route"));
 app.use("/account", rateLimiter, require("./modules/account/account.route"));
+app.use("/beneficiary", rateLimiter, require("./modules/beneficiary/beneficiary.route"));
 app.use("/transactions", auth, rateLimiter, require("./modules/transactions/transaction.route"));
 app.use("/cards", auth, rateLimiter, require("./modules/cards/card.route"));
 
