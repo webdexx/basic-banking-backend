@@ -4,42 +4,59 @@ const jwt = require("jsonwebtoken");
 const User = require("./user.model");
 
 const login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-        const user = await User.findOne({ email }).populate("flag");
+    const user = await User.findOne({ email }).populate("flag");
 
-        if(!user) {
-            return res.status(400).json({
-                message: "Invalid Email or Password"
-            });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if(!isMatch){
-            return res.status(400).json({
-                message: "Invlid Password"
-            });
-        }
-
-        const token = jwt.sign(
-            { id: user._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "7d" }
-        );
-
-        res.status(200).json({
-            message: "Login Successful",
-            token,
-            flag: user.flag
-       });
-    } catch(error) {
-        res.status(500).json({
-            message: "Internal Server Error",
-            error: error.message,
-        });
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid Email or Password",
+      });
     }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Invlid Password",
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
+
+    res.cookie("accessToken", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 10,
+    });
+
+    res.status(200).json({
+      message: "Login Successful",
+      flag: user.flag,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
 };
 
-module.exports = { login };
+const logout = async (req, res) => {
+
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  res.json({
+    message: "Logged Out Success"
+  })
+};
+
+module.exports = { login, logout };

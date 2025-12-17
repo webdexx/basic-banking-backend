@@ -8,7 +8,6 @@ function buildName(user) {
   const last = user.lastName || "";
   const full = `${first} ${last}`.trim();
   if (full) return full;
-  // some users may have a single `name` field
   return user.name || null;
 }
 
