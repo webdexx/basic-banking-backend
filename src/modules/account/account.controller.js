@@ -15,7 +15,6 @@ const createAccount = async (req, res) => {
         message: "User Already has an account",
         account: {
           accountNumber: existingAccount.accountNumber,
-          name: fullName || "",
           branch: existingAccount.branch,
           status: existingAccount.status,
         },
@@ -44,7 +43,6 @@ const createAccount = async (req, res) => {
       message: "Account Created Successfully",
       account: {
         accountNumber: createNewAccount.accountNumber,
-        name: fullName || "",
         ifsc: createNewAccount.ifsc,
         branch: createNewAccount.branch,
         balance: createNewAccount.balance,
@@ -74,14 +72,9 @@ const showAccount = async (req, res) => {
 
     const accountDetails = await Account.findOne({ user: userId });
 
-    const user = await User.findById(userId).select("firstName lastName name");
-    const fullName =
-      `${user.firstName || ""} ${user.lastName || ""}`.trim();
-
     return res.status(200).json({
       message: "Fetch Successful",
       accountDetails,
-      fullName
     });
   } catch (error) {
     return res.status(500).json({
