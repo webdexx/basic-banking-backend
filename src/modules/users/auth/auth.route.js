@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { login, logout } = require("./auth.controller");
 const auth = require("./auth.middleware");
-const User = require("./user.model");
+const User = require("../user.model");
 
 router.post("/login", login);
 router.get("/me", auth, async (req, res) => {

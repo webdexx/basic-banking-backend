@@ -4,7 +4,7 @@ const router = express.Router();
 const { addBeneficiary, showBeneficiaries } = require("./beneficiary.controller");
 
 const requireKYC = require("../../middleware/requireKYC");
-const auth = require("../users/auth.middleware");
+const auth = require("../users/auth/auth.middleware");
 
 router.post("/add", auth, requireKYC, addBeneficiary);
 router.get("/get", auth, showBeneficiaries);

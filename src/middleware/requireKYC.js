@@ -1,4 +1,4 @@
-const UserDetails = require("../modules/users/userDetails.model");
+const UserDetails = require("../modules/users/kyc/userDetails.model");
 
 const requireKYC = async (req, res, next) => {
   const userId = req.user.id;

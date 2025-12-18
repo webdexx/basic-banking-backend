@@ -15,7 +15,7 @@ const Account = require("./modules/account/account.model");
 const Transaction = require("./modules/transactions/transaction.model");
 const Beneficiary = require("./modules/beneficiary/beneficiary.model");
 
-const auth = require("./modules/users/auth.middleware");
+const auth = require("./modules/users/auth/auth.middleware");
 
 const app = express();
 
@@ -32,8 +32,8 @@ app.use(cors({
 connectDB();
 
 app.use("/register", rateLimiter, require("./modules/users/user.route"));
-app.use("/kyc", auth, rateLimiter, require("./modules/users/kyc.route"));
-app.use("/auth", rateLimiter, require("./modules/users/auth.route"));
+app.use("/kyc", auth, rateLimiter, require("./modules/users/kyc/kyc.route"));
+app.use("/auth", rateLimiter, require("./modules/users/auth/auth.route"));
 app.use("/account", rateLimiter, require("./modules/account/account.route"));
 app.use("/beneficiary", rateLimiter, require("./modules/beneficiary/beneficiary.route"));
 app.use("/transactions", auth, rateLimiter, require("./modules/transactions/transaction.route"));

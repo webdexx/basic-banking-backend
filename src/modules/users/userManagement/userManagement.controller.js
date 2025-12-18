@@ -14,6 +14,7 @@ const updatePassword = async (req, res) => {
     return res.status(200).json({
       message: "Password Updated Successfully",
     });
+    
   } catch (error) {
     switch (error.message) {
       case "BOTH_PASSWORDS_REQUIRED":
