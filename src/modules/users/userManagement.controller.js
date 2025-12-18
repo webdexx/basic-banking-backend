@@ -1,6 +1,4 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
 const User = require("../models/User");
 
 const updatePassword = async (req, res) => {
@@ -14,15 +12,14 @@ const updatePassword = async (req, res) => {
 
     const validateNewPassword = () => {
       if (newPassword.length < 6) {
-        
-          const errMsg = "New Password should be more than 6 characters";
+        const errMsg = "New Password should be more than 6 characters";
       }
     };
 
-    if(!validateNewPassword) {
-        res.status(400).json({
-            message: errMsg,
-        })
+    if (!validateNewPassword) {
+      res.status(400).json({
+        message: errMsg,
+      });
     }
 
     const comparePassword = await bcrypt.compare(newPassword, oldPassword);
@@ -35,7 +32,7 @@ const updatePassword = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    const passwordUpdate = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { _id: userId },
       { $set: { password: hashedPassword } },
       { new: true }
@@ -52,4 +49,4 @@ const updatePassword = async (req, res) => {
   }
 };
 
-module.exports = { registerUser };
+module.exports = { updatePassword };
