@@ -1,36 +1,31 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const { createAdminService } = require("./createAdmin.service");
 
-const User = require("../models/Admin");
-
-const registerAdminUser = async (req, res) => {
+const createNewAdmin = async (req, res) => {
     try {
-      const { fullName, email, mobileNo, password, pin, role, isActive } = req.body;
+        const { fullName, email, mobileNo, password, pin, role } = req.body;
 
-      const existingUser = await User.findOne({ email });
-
-      if(existingUser) {
-        return res.status(400).json({
-            message: "User Already registered"
-        });
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      const newUser = await User.create({
-            firstName,
-            lastName,
+        const result = await createAdminService({
+            fullName,
             email,
             mobileNo,
-            password: hashedPassword,
-            isActive,
-            flag
+            password,
+            pin,
+            role
         });
 
-        return res.status(201).json({
-            message: "User Created Successfully",
-            user: newUser
-        })
+        if (result.status === "EMAIL_EXISTS") {
+            return res.status(409).json({
+                message: "User already exists!",
+            })
+        }
+
+        if (result.status === "SUCCESS") {
+            return res.status(201).json({
+                message: "New Admin Created!",
+                admin: result.admin
+            })
+        }
+
     } catch (error) {
         return res.status(500).json({
             message: "Internal Server Error",
@@ -39,4 +34,4 @@ const registerAdminUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser };
+module.exports = { createNewAdmin };

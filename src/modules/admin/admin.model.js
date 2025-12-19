@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
+const adminSchema = new mongoose.Schema(
   {
     fullName: {
       type: String,
@@ -23,15 +23,22 @@ const userSchema = new mongoose.Schema(
     pin: {
       type: String,
       required: true,
+      match: /^[0-9]{4}$/
     },
     role: {
-        type: String,
-        required: true,
-        enum: ["ADMIN", "ACCOUNTANT", "CASHIER", "MANAGER", "BACKOFFICE", "SALES", "OTHER"]
+      type: String,
+      required: true,
+      enum: ["SUPERADMIN", "SUBADMIN", "MANAGER", "OTHER"],
+      default: "OTHER"
     },
     isActive: {
       type: Boolean,
       default: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
+      required: true
     }
   },
   {
@@ -39,6 +46,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model("User", userSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
-module.exports = User;
+module.exports = Admin;
