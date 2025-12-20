@@ -23,7 +23,6 @@ const adminSchema = new mongoose.Schema(
     pin: {
       type: String,
       required: true,
-      match: /^[0-9]{4}$/
     },
     role: {
       type: String,

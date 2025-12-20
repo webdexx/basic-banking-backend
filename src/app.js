@@ -14,6 +14,7 @@ const User = require("./modules/users/user.model");
 const Account = require("./modules/account/account.model");
 const Transaction = require("./modules/transactions/transaction.model");
 const Beneficiary = require("./modules/beneficiary/beneficiary.model");
+const Admin = require("./modules/admin/admin.model");
 
 const auth = require("./modules/users/auth/auth.middleware");
 
@@ -39,6 +40,9 @@ app.use("/beneficiary", rateLimiter, require("./modules/beneficiary/beneficiary.
 app.use("/transactions", auth, rateLimiter, require("./modules/transactions/transaction.route"));
 app.use("/cards", auth, rateLimiter, require("./modules/cards/card.route"));
 app.use("/security", rateLimiter, require("./modules/users/userManagement/security.route"));
+
+app.use("/admin", require("./modules/admin/admin.route"));
+
 
 app.get("/", auth, (async (req, res) => {
 

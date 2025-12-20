@@ -3,17 +3,17 @@ const Admin = require("../admin/admin.model");
 
 const adminAuth = async (req, res, next) => {
   try {
-    const token =
+    const adminToken =
       req.cookies?.adminToken ||
       req.headers.authorization?.split(" ")[1];
 
-    if (!token) {
+    if (!adminToken) {
       return res.status(401).json({
         message: "Admin authentication required",
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
+    const decoded = jwt.verify(adminToken, process.env.JWT_ADMIN_SECRET);
 
     if (decoded.type !== "ADMIN") {
       return res.status(403).json({
@@ -53,4 +53,4 @@ const adminAuth = async (req, res, next) => {
   }
 };
 
-module.exports = { adminAuth };
+module.exports = adminAuth;

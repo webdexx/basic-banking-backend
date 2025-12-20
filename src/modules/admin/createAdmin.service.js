@@ -2,7 +2,7 @@ const Admin = require("./admin.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const createAdminService = async ({ fullName, email, mobileNo, password, pin, role }) => {
+const createAdminService = async ({ user, fullName, email, mobileNo, password, pin, role }) => {
 
     const existingAdmin = await Admin.findOne({
         $or: [{ email }, { mobileNo }]
@@ -22,7 +22,6 @@ const createAdminService = async ({ fullName, email, mobileNo, password, pin, ro
         return { status: "INVALID_PIN" };
     }
 
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const hashedPin = await bcrypt.hash(pin.toString(), 10);
@@ -33,7 +32,6 @@ const createAdminService = async ({ fullName, email, mobileNo, password, pin, ro
         return { status: "INVALID_ROLE" };
     }
 
-
     const newAdmin = await Admin.create({
         fullName,
         email,
@@ -41,7 +39,7 @@ const createAdminService = async ({ fullName, email, mobileNo, password, pin, ro
         password: hashedPassword,
         pin: hashedPin,
         role: role || "OTHER",
-        isActive,
+        createdBy: user,
     });
 
     return {
