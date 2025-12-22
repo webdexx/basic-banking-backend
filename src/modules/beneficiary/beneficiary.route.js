@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const { createAccount, showAccount } = require("./account.controller");
+const { addBeneficiary, showBeneficiaries } = require("./beneficiary.controller");
+
 const requireKYC = require("../../middleware/requireKYC");
 const auth = require("../users/auth/auth.middleware");
 
-router.post("/new", auth, requireKYC, createAccount);
-router.get("/show", auth, showAccount);
+router.post("/add", auth, requireKYC, addBeneficiary);
+router.get("/get", auth, showBeneficiaries);
 
 module.exports = router;

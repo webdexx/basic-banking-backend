@@ -1,8 +1,9 @@
-const UserDetails = require("../modules/users/userDetails.model");
+const UserDetails = require("../modules/users/kyc/userDetails.model");
 
 const requireKYC = async (req, res, next) => {
   const userId = req.user.id;
   const userDetails = await UserDetails.findOne({ user: userId });
+  console.log("Require KYC Called");
 
   if (!userDetails) {
     return res.status(400).json({
