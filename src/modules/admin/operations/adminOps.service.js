@@ -1,6 +1,6 @@
-const User = require("../users/user.model");
-const Account = require("../account/account.model");
-const Transaction = require("../transactions/transaction.model");
+const User = require("../../users/user.model");
+const Account = require("../../account/account.model");
+const Transaction = require("../../transactions/transaction.model");
 
 const getUsersService = async () => {
   const users = await User.find(

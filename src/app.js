@@ -26,7 +26,7 @@ app.use(compression());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "http://localhost:5174"],
   credentials: true
 }));
 
@@ -42,7 +42,7 @@ app.use("/cards", auth, rateLimiter, require("./modules/cards/card.route"));
 app.use("/security", rateLimiter, require("./modules/users/userManagement/security.route"));
 
 app.use("/admin", require("./modules/admin/adminAuth.route"));
-app.use("/admin/ops", require("./modules/admin/adminOps.route"));
+app.use("/admin/ops", require("./modules/admin/operations/adminOps.route"));
 
 
 app.get("/", auth, (async (req, res) => {

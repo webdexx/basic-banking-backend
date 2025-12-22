@@ -26,7 +26,7 @@ const createAdminService = async ({ user, fullName, email, mobileNo, password, p
 
     const hashedPin = await bcrypt.hash(pin.toString(), 10);
 
-    const allowedRoles = ["SUBADMIN", "MANAGER", "OTHER"];
+    const allowedRoles = ["SUPERADMIN","SUBADMIN", "MANAGER", "OTHER"];
 
     if (!allowedRoles.includes(role)) {
         return { status: "INVALID_ROLE" };
@@ -39,7 +39,6 @@ const createAdminService = async ({ user, fullName, email, mobileNo, password, p
         password: hashedPassword,
         pin: hashedPin,
         role: role || "OTHER",
-        createdBy: user,
     });
 
     return {
