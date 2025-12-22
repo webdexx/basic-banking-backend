@@ -23,7 +23,7 @@ const adminLoginService = async ({ email, mobileNo, password, pin }) => {
 
   const admin = await Admin.findOne({
     $or: [{ email }, { mobileNo }],
-  });
+  }).populate("_id isActive");
 
   if (!admin) {
     return {
@@ -61,6 +61,8 @@ const adminLoginService = async ({ email, mobileNo, password, pin }) => {
   return {
     status: "LOGIN_SUCCESS",
     adminToken,
+    adminId: admin._id,
+    adminStatus: admin.isActive
   };
 };
 

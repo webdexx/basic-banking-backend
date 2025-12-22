@@ -41,7 +41,8 @@ app.use("/transactions", auth, rateLimiter, require("./modules/transactions/tran
 app.use("/cards", auth, rateLimiter, require("./modules/cards/card.route"));
 app.use("/security", rateLimiter, require("./modules/users/userManagement/security.route"));
 
-app.use("/admin", require("./modules/admin/admin.route"));
+app.use("/admin", require("./modules/admin/adminAuth.route"));
+app.use("/admin/ops", require("./modules/admin/adminOps.route"));
 
 
 app.get("/", auth, (async (req, res) => {

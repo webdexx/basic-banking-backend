@@ -66,6 +66,8 @@ const adminLogin = async (req, res) => {
 
       return res.status(200).json({
         message: "Login Success",
+        adminId: result.adminId,
+        adminStatus: result.adminStatus
       });
     }
   } catch (error) {
