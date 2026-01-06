@@ -89,6 +89,24 @@ const getTransactionsService = async () => {
   };
 };
 
+const getCardsService = async () => {
+  const cards = await Transaction.find(
+    {},
+    "user account type amount balanceAfter beneficiaryDetails senderDetails linkedTransactionId description status category metadata"
+  );
+
+  if (transactions.length === 0) {
+    return {
+      status: "NOT_FOUND",
+    };
+  }
+
+  return {
+    status: "SUCCESS",
+    transactions,
+  };
+};
+
 module.exports = {
   getUsersService,
   getAccountsService,

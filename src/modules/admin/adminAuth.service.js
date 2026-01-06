@@ -23,7 +23,7 @@ const adminLoginService = async ({ email, mobileNo, password, pin }) => {
 
   const admin = await Admin.findOne({
     $or: [{ email }, { mobileNo }],
-  }).populate("_id isActive");
+  }).populate("_id isActive fullName email mobileNo role");
 
   if (!admin) {
     return {
@@ -61,8 +61,14 @@ const adminLoginService = async ({ email, mobileNo, password, pin }) => {
   return {
     status: "LOGIN_SUCCESS",
     adminToken,
-    adminId: admin._id,
-    adminStatus: admin.isActive
+    admin: {
+      adminId: admin._id,
+      status: admin.isActive,
+      role: admin.role,
+      name: admin.fullName,
+      email: admin.email,
+      mobileNo: admin.mobileNo
+    },
   };
 };
 
@@ -93,4 +99,14 @@ const adminLoginRefreshService = async ({ pin, adminToken }) => {
   return true;
 };
 
-module.exports = { adminLoginService, adminLoginRefreshService };
+const adminLogoutService = async (res) => {
+    res.clearCookie("adminToken", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  return true;
+}
+
+module.exports = { adminLoginService, adminLoginRefreshService, adminLogoutService };

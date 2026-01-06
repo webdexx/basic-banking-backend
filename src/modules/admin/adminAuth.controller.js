@@ -1,6 +1,7 @@
 const {
   adminLoginService,
   adminLoginRefreshService,
+  adminLogoutService,
 } = require("./adminAuth.service");
 
 const adminLogin = async (req, res) => {
@@ -66,8 +67,7 @@ const adminLogin = async (req, res) => {
 
       return res.status(200).json({
         message: "Login Success",
-        adminId: result.adminId,
-        adminStatus: result.adminStatus
+        admin: result.admin,
       });
     }
   } catch (error) {
@@ -105,4 +105,19 @@ const adminLoginRefresh = async (req, res) => {
   });
 };
 
-module.exports = { adminLogin, adminLoginRefresh };
+const adminLogout = async (req, res) => {
+  try {
+    await adminLogoutService(res);
+
+    return res.status(200).json({
+      message: "Logged Out Successfully"
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Logout failed, please try again.",
+      error: error.message
+    });
+  }
+};
+
+module.exports = { adminLogin, adminLoginRefresh, adminLogout };
